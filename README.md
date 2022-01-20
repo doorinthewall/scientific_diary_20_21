@@ -1,3 +1,36 @@
+# scientific_diary_20_22
+[Disentangled Graph Collaborative Filtering](https://arxiv.org/pdf/2007.01764.pdf)  
+
+This work is dedicated to the problem of disentangling of the factors related to the different user intents. The authors take the CF task: prediction of the items which might interest the user, and turn it into the task with a bipartite graph structure. Now when they have two groups of nodes: items and users, and edges between them mark the history of user's interests, emrges the problem of disantangling of different user intent types.
+Intents here take the form of latent variables. The idea is then to choose the number ($K$) of this latent variables and let the model itself to learn which item-user connection is influenced by which intent. The authors build multi-graph where each edge type corresponds to the one of the intents and then devide the node embeddings into $K$ chunks as well. 
+
+![image.png](image/DGCF/DGCF_framework.png)
+
+
+One of the important details is that there are no learnable parameters in the model except the embeddings itself (LightGCN). Nevertheless it's doubious that the proposed pipeline is easy to scale to large graphs since experiments were taken only on datasets with modest number of nodes.
+
+![image2.png](image/DGCF/graph_spec.png)
+
+Moreover the graph structure is too learned by the model itself and it makes it hard to commit personalized page rank convolution to this pipeline. Instead authors use the multiple layers and it has well known disadvantages such as oversmoothing and bad scalability even in stochastic scenario.
+
+The BPR loss is used for the recommendation task with the [distance correlation](https://en.wikipedia.org/wiki/Distance_correlation) based regularization. 
+
+![image4.png](image/DGCF/bpr_loss.png)
+
+![image3.png](image/DGCF/regularization_loss.png)
+
+One of the interesting properties of the obtained intensions is that we can lower the least important intension value with no harm but not zero it out. The Authors call this property vitamine.
+
+![image5.png](image/DGCF/vitamine.png)
+
+[MultiSage: Empowering GCN with Contextualized Multi-Embeddings on Web-Scale Multipartite Networks](https://www-cs-faculty.stanford.edu/people/jure/pubs/multisage-kdd20.pdf)
+
+The article is about the utilization of GCN for the purpose of item to item recomendations.
+
+The authors mainly itnroduce the new model for bipartite graphs. Graphs are obtained with the suggestion that every target nodes pair is connected via some context node (Ex. images are pinned to a board). To process such graphs effeciently authors take the advantage of APPNP. They also implement new type of attention and use context nodes represenations as some sort of mask for the features of target nodes. [slides](https://docs.google.com/presentation/d/1jnnq6K2kFhrBxRustHt83gSVIFvPaHKkOmjUThLhwV8/edit?usp=sharing)
+
+------------
+
 # scientific_diary_20_21
 
 [INDUCTIVE REPRESENTATION LEARNING ON
